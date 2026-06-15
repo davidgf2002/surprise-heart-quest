@@ -4,17 +4,17 @@ import { useMemo, useState } from "react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Quiz · Acceso restringido" },
-      { name: "description", content: "Un pequeño test antes de desbloquear lo que sigue." },
-      { property: "og:title", content: "Quiz · Acceso restringido" },
-      { property: "og:description", content: "Responde correctamente para continuar." },
+      { title: "Quiz para ti" },
+      { name: "description", content: "Un mini test divertido. Si lo apruebas, hay premio." },
+      { property: "og:title", content: "Quiz para ti" },
+      { property: "og:description", content: "Un mini test divertido. Si lo apruebas, hay premio." },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
       },
     ],
   }),
@@ -62,15 +62,15 @@ function Index() {
       setFeedback(null);
       if (current + 1 >= total) setStage("result");
       else setCurrent((c) => c + 1);
-    }, 950);
+    }, 900);
   };
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <div className="bg-dot-grid pointer-events-none absolute inset-0 opacity-60" />
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-xl flex-col px-5 py-6">
-        <Header stage={stage} current={current} total={total} score={score} />
-        <div className="flex flex-1 items-center justify-center py-8">
+      <Backdrop />
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-lg flex-col px-5 py-6">
+        <Header stage={stage} current={current} total={total} />
+        <div className="flex flex-1 items-center justify-center py-6">
           {stage === "intro" && <Intro onStart={() => setStage("explain")} />}
           {stage === "explain" && <Explain onContinue={() => setStage("quiz")} />}
           {stage === "quiz" && (
@@ -86,100 +86,103 @@ function Index() {
           )}
           {stage === "result" && <Result score={score} total={total} />}
         </div>
-        <footer className="pt-4 text-center font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-          v1.0 · build 2026.06
-        </footer>
       </div>
     </main>
   );
 }
 
-function Header({ stage, current, total, score }: { stage: Stage; current: number; total: number; score: number }) {
+function Backdrop() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div
+        className="animate-float-blob absolute -top-24 -left-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+        style={{ background: "oklch(0.85 0.1 50)" }}
+      />
+      <div
+        className="animate-float-blob absolute -bottom-24 -right-20 h-72 w-72 rounded-full opacity-30 blur-3xl"
+        style={{ background: "oklch(0.85 0.08 240)", animationDelay: "-7s" }}
+      />
+    </div>
+  );
+}
+
+function Header({ stage, current, total }: { stage: Stage; current: number; total: number }) {
   const showProgress = stage === "quiz" || stage === "result";
   const progress = stage === "result" ? 100 : (current / total) * 100;
   return (
-    <header className="flex items-center justify-between gap-4 border-b border-border pb-4">
+    <header className="flex items-center justify-between gap-4">
       <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-foreground text-background">
-          <span className="font-mono text-xs font-bold">Q</span>
-        </div>
-        <span className="text-sm font-semibold tracking-tight">quiz.app</span>
+        <span className="text-xl">🎯</span>
+        <span className="text-sm font-semibold tracking-tight">Quizcito</span>
       </div>
-      <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-        {showProgress ? (
-          <>
-            <span>{Math.min(current + (stage === "result" ? 0 : 1), total)}/{total}</span>
-            <div className="h-1 w-20 overflow-hidden rounded-full bg-secondary">
-              <div className="h-full bg-foreground transition-all duration-500" style={{ width: `${progress}%` }} />
-            </div>
-            <span>{score} pt</span>
-          </>
-        ) : (
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            ready
+      {showProgress && (
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="h-1.5 w-24 overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-foreground transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="tabular-nums">
+            {Math.min(current + (stage === "result" ? 0 : 1), total)}/{total}
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }
 
 function Intro({ onStart }: { onStart: () => void }) {
   return (
-    <div className="animate-fade-in w-full">
-      <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground shadow-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> acceso restringido
+    <div className="animate-fade-in w-full text-center">
+      <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> un mini quiz para ti
       </div>
-      <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-        Un test rápido<br />
-        <span className="text-muted-foreground">antes de continuar.</span>
+      <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
+        ¿Cuánto me<br />conoces de verdad?
       </h1>
-      <p className="mt-5 max-w-md text-base text-muted-foreground">
-        9 preguntas. Sin trampas (casi). Si apruebas, hay recompensa física esperándote.
+      <p className="mx-auto mt-4 max-w-sm text-base text-muted-foreground">
+        9 preguntas rápidas. Algunas fáciles, otras absurdas. Si lo apruebas, hay sorpresa.
       </p>
-      <div className="mt-8 flex items-center gap-3">
-        <button
-          onClick={onStart}
-          className="group inline-flex items-center gap-2 rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-all hover:opacity-90 active:scale-[0.98]"
-        >
-          Empezar
-          <span className="font-mono opacity-70 transition-transform group-hover:translate-x-0.5">→</span>
-        </button>
-        <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-          ~ 2 min
-        </span>
-      </div>
+      <button
+        onClick={onStart}
+        className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-all hover:opacity-90 active:scale-[0.98]"
+      >
+        Empezar quiz
+        <span aria-hidden>→</span>
+      </button>
+      <p className="mt-3 text-xs text-muted-foreground">~ 2 minutos · sin trampas (casi)</p>
     </div>
   );
 }
 
 function Explain({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="animate-fade-in w-full rounded-2xl border border-border bg-card p-7 shadow-card sm:p-9">
-      <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-        Instrucciones
-      </div>
-      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+    <div className="animate-fade-in w-full rounded-3xl border border-border bg-card p-7 shadow-card sm:p-8">
+      <h2 className="text-2xl font-bold tracking-tight text-foreground">
         Cómo funciona
       </h2>
-      <ul className="mt-6 divide-y divide-border">
+      <p className="mt-1 text-sm text-muted-foreground">Tres reglas, muy fáciles.</p>
+      <ul className="mt-5 space-y-3">
         {[
-          ["01", "Preguntas reales. Demuestra que prestas atención."],
-          ["02", "Alguna pregunta absurda. Improvisa."],
-          ["03", "Al final hay una sorpresa. Sin spoilers."],
-        ].map(([n, t]) => (
-          <li key={n} className="flex items-start gap-4 py-3">
-            <span className="font-mono text-xs text-muted-foreground">{n}</span>
-            <span className="text-sm text-foreground">{t}</span>
+          ["💬", "Habrá preguntas reales", "A ver si prestas atención."],
+          ["🤷", "Y alguna absurda", "Improvisa, vale todo."],
+          ["🎁", "Al final, sorpresa", "Pero solo si terminas."],
+        ].map(([icon, t, sub]) => (
+          <li key={t} className="flex items-start gap-3 rounded-xl bg-secondary/60 p-3">
+            <span className="text-xl leading-none">{icon}</span>
+            <div>
+              <div className="text-sm font-semibold text-foreground">{t}</div>
+              <div className="text-xs text-muted-foreground">{sub}</div>
+            </div>
           </li>
         ))}
       </ul>
       <button
         onClick={onContinue}
-        className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-all hover:opacity-90 active:scale-[0.99] sm:w-auto"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition-all hover:opacity-90 active:scale-[0.99]"
       >
-        Continuar <span className="font-mono opacity-70">→</span>
+        Vamos <span aria-hidden>→</span>
       </button>
     </div>
   );
@@ -202,70 +205,51 @@ function QuizCard({
 }) {
   return (
     <div className={`w-full ${feedback === "wrong" ? "animate-shake" : "animate-fade-in"}`}>
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-          <span>Pregunta {String(index + 1).padStart(2, "0")}</span>
-          <span>/ {String(total).padStart(2, "0")}</span>
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-7">
+        <div className="text-xs font-medium text-muted-foreground">
+          Pregunta {index + 1} de {total}
         </div>
-        <h2 className="mt-3 text-balance text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-[26px]">
+        <h2 className="mt-2 text-balance text-2xl font-bold leading-snug tracking-tight text-foreground">
           {question.q}
         </h2>
         {question.hint && (
-          <p className="mt-2 font-mono text-xs text-muted-foreground">// {question.hint}</p>
+          <p className="mt-2 text-xs italic text-muted-foreground">Pista: {question.hint}</p>
         )}
-        <div className="mt-6 space-y-2">
+        <div className="mt-5 space-y-2">
           {question.options.map((opt, i) => {
             const isPicked = picked === i;
             const isCorrect = i === question.correct;
-            let state = "border-border bg-card hover:border-foreground/40 hover:bg-secondary";
-            let badgeState = "border-border text-muted-foreground group-hover:border-foreground/50 group-hover:text-foreground";
+            let state = "border-border bg-card hover:border-foreground/30 hover:bg-secondary/60";
             if (picked !== null) {
-              if (isPicked && isCorrect) {
-                state = "border-success/60 bg-success/5";
-                badgeState = "border-success/60 bg-success/10 text-success";
-              } else if (isPicked && !isCorrect) {
-                state = "border-danger/60 bg-danger/5";
-                badgeState = "border-danger/60 bg-danger/10 text-danger";
-              } else if (isCorrect) {
-                state = "border-success/40 bg-success/5";
-                badgeState = "border-success/40 text-success";
-              } else {
-                state = "border-border bg-card opacity-50";
-                badgeState = "border-border text-muted-foreground";
-              }
+              if (isPicked && isCorrect) state = "border-success/60 bg-success/10";
+              else if (isPicked && !isCorrect) state = "border-danger/60 bg-danger/10";
+              else if (isCorrect) state = "border-success/40 bg-success/5";
+              else state = "border-border bg-card opacity-50";
             }
-            const letter = String.fromCharCode(65 + i);
             return (
               <button
                 key={i}
                 disabled={picked !== null}
                 onClick={() => onPick(i)}
-                className={`group flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-[15px] font-medium text-foreground transition-all active:scale-[0.995] ${state}`}
+                className={`flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3.5 text-left text-[15px] font-medium text-foreground transition-all active:scale-[0.99] ${state}`}
               >
-                <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border font-mono text-[11px] transition-colors ${badgeState}`}
-                >
-                  {letter}
-                </span>
-                <span className="flex-1">{opt}</span>
-                {picked !== null && isCorrect && <span className="font-mono text-xs text-success">✓</span>}
-                {isPicked && !isCorrect && <span className="font-mono text-xs text-danger">✗</span>}
+                <span>{opt}</span>
+                {picked !== null && isCorrect && (
+                  <span className="text-sm text-success" aria-hidden>✓</span>
+                )}
+                {isPicked && !isCorrect && (
+                  <span className="text-sm text-danger" aria-hidden>✕</span>
+                )}
               </button>
             );
           })}
         </div>
         {feedback && (
-          <div className="animate-pop-in mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest">
+          <div className="animate-pop-in mt-4 text-center text-sm font-medium">
             {feedback === "correct" ? (
-              <>
-                <span className="h-1.5 w-1.5 rounded-full bg-success" />
-                <span className="text-success">correct · te conoces bien</span>
-              </>
+              <span className="text-success">Bien ahí ✨</span>
             ) : (
-              <>
-                <span className="h-1.5 w-1.5 rounded-full bg-danger" />
-                <span className="text-danger">incorrect · acepto la decepción</span>
-              </>
+              <span className="text-danger">Casi… pero no 😅</span>
             )}
           </div>
         )}
@@ -276,63 +260,43 @@ function QuizCard({
 
 function Result({ score, total }: { score: number; total: number }) {
   const pct = Math.round((score / total) * 100);
-  const { tag, title, message } = useMemo(() => {
-    if (pct < 50) return { tag: "rookie", title: "Necesitas una actualización.", message: "Tranquila, te la doy yo en persona." };
-    if (pct < 80) return { tag: "intermediate", title: "Vas bastante bien.", message: "Casi me conoces de memoria." };
-    return { tag: "expert", title: "Nivel experto desbloqueado.", message: "Oficialmente sabes más de mí que yo." };
+  const { emoji, title, message } = useMemo(() => {
+    if (pct < 50) return { emoji: "🫣", title: "Bueno… hay margen de mejora", message: "Tranquila, te pongo al día yo." };
+    if (pct < 80) return { emoji: "👏", title: "Vas bastante bien", message: "Casi me conoces de memoria." };
+    return { emoji: "🏆", title: "Nivel experto", message: "Sabes más de mí que yo mismo." };
   }, [pct]);
 
   return (
     <div className="animate-fade-in w-full">
-      <div className="rounded-2xl border border-border bg-card p-7 shadow-card sm:p-9">
-        <div className="flex items-center justify-between">
-          <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            completed
-          </div>
-          <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-            tier: {tag}
-          </div>
-        </div>
-
-        <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
+      <div className="rounded-3xl border border-border bg-card p-7 text-center shadow-card sm:p-9">
+        <div className="text-6xl">{emoji}</div>
+        <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground">
           {title}
         </h2>
-        <p className="mt-2 text-muted-foreground">{message}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{message}</p>
 
-        <div className="mt-6 grid grid-cols-3 divide-x divide-border overflow-hidden rounded-xl border border-border bg-background">
-          <Stat label="score" value={`${score}/${total}`} />
-          <Stat label="accuracy" value={`${pct}%`} />
-          <Stat label="status" value="passed" />
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-1.5 text-sm font-semibold text-foreground tabular-nums">
+          {score} / {total}
+          <span className="text-muted-foreground">·</span>
+          <span className="text-muted-foreground">{pct}%</span>
         </div>
 
-        <div className="mt-6 rounded-xl border border-dashed border-border bg-secondary/40 p-5">
-          <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+        <div className="mt-6 rounded-2xl border border-dashed border-border bg-secondary/40 p-5 text-left">
+          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Siguiente paso
           </div>
           <p className="mt-1 text-[15px] text-foreground">
-            Ve a la caja que te he preparado. Dentro está todo lo que es tuyo.
+            Ve a la caja que te he preparado. Dentro está todo lo que es tuyo. 🎁
           </p>
         </div>
 
         <button
           onClick={() => window.location.reload()}
-          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary sm:w-auto"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
         >
-          Reiniciar <span className="font-mono opacity-70">↻</span>
+          Volver a empezar <span aria-hidden>↻</span>
         </button>
       </div>
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="px-4 py-3">
-      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-        {label}
-      </div>
-      <div className="mt-1 text-lg font-semibold tracking-tight text-foreground">{value}</div>
     </div>
   );
 }
