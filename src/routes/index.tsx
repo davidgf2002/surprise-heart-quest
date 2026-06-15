@@ -112,8 +112,6 @@ function Header({ stage, current, total }: { stage: Stage; current: number; tota
   return (
     <header className="flex items-center justify-between gap-4">
       <div className="flex items-center gap-2">
-        <span className="text-xl">🎯</span>
-        <span className="text-sm font-semibold tracking-tight">Quizcito</span>
       </div>
       {showProgress && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -136,22 +134,22 @@ function Intro({ onStart }: { onStart: () => void }) {
   return (
     <div className="animate-fade-in w-full text-center">
       <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> un mini quiz para ti
+        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> un mini examen para ti
       </div>
       <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
         ¿Cuánto me<br />conoces de verdad?
       </h1>
       <p className="mx-auto mt-4 max-w-sm text-base text-muted-foreground">
-        9 preguntas rápidas. Algunas fáciles, otras absurdas. Si lo apruebas, hay sorpresa.
+        9 preguntas rápidas. Aprueba y hay sorpresa.
       </p>
       <button
         onClick={onStart}
         className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-all hover:opacity-90 active:scale-[0.98]"
       >
-        Empezar quiz
+        Empezar examen
         <span aria-hidden>→</span>
       </button>
-      <p className="mt-3 text-xs text-muted-foreground">~ 2 minutos · sin trampas (casi)</p>
+      <p className="mt-3 text-xs text-muted-foreground">~ 2 minutos · sin hacer trampas</p>
     </div>
   );
 }
@@ -165,9 +163,9 @@ function Explain({ onContinue }: { onContinue: () => void }) {
       <p className="mt-1 text-sm text-muted-foreground">Tres reglas, muy fáciles.</p>
       <ul className="mt-5 space-y-3">
         {[
-          ["💬", "Habrá preguntas reales", "A ver si prestas atención."],
-          ["🤷", "Y alguna absurda", "Improvisa, vale todo."],
-          ["🎁", "Al final, sorpresa", "Pero solo si terminas."],
+          ["🚫", "Está prohibido copiar", "Será motivo de castigo."],
+          ["❌", "No se permite el uso de apuntes", "Ni de ChatGPT."],
+          ["🏆", "Cada acierto suma 1 punto", "Con cada fallo muere una persona aleatoria."],
         ].map(([icon, t, sub]) => (
           <li key={t} className="flex items-start gap-3 rounded-xl bg-secondary/60 p-3">
             <span className="text-xl leading-none">{icon}</span>
