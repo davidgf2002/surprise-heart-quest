@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import foto1 from "@/assets/foto1.jpeg.asset.json";
+import foto2 from "@/assets/foto2.jpeg.asset.json";
+import foto3 from "@/assets/foto3.jpeg.asset.json";
+import foto4 from "@/assets/foto4.jpeg.asset.json";
+import foto5 from "@/assets/foto5.jpeg.asset.json";
+import foto6 from "@/assets/foto6.jpeg.asset.json";
+import foto7 from "@/assets/foto7.jpeg.asset.json";
+import foto8 from "@/assets/foto8.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
