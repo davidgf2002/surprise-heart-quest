@@ -173,14 +173,14 @@ function PolaroidScatter() {
     size: number;
     hideOnMobile?: boolean;
   }> = [
-    { src: "https://placehold.co/300x300?text=Foto+1", alt: "", top: "4%", left: "3%", rotate: -8, size: 140 },
-    { src: "https://placehold.co/300x300?text=Foto+2", alt: "", top: "6%", right: "4%", rotate: 7, size: 150 },
-    { src: "https://placehold.co/300x300?text=Foto+3", alt: "", top: "34%", left: "2%", rotate: 5, size: 130, hideOnMobile: true },
-    { src: "https://placehold.co/300x300?text=Foto+4", alt: "", top: "40%", right: "2%", rotate: -6, size: 140, hideOnMobile: true },
-    { src: "https://placehold.co/300x300?text=Foto+5", alt: "", bottom: "20%", left: "4%", rotate: 9, size: 130, hideOnMobile: true },
-    { src: "https://placehold.co/300x300?text=Foto+6", alt: "", bottom: "4%", left: "6%", rotate: -10, size: 150 },
-    { src: "https://placehold.co/300x300?text=Foto+7", alt: "", bottom: "2%", left: "44%", rotate: 4, size: 130, hideOnMobile: true },
-    { src: "https://placehold.co/300x300?text=Foto+8", alt: "", bottom: "5%", right: "5%", rotate: 8, size: 150 },
+    { src: "src/img/foto1.jpeg", alt: "", top: "4%", left: "3%", rotate: -8, size: 140 },
+    { src: "src/img/foto2.jpeg", alt: "", top: "6%", right: "4%", rotate: 7, size: 150 },
+    { src: "src/img/foto3.jpeg", alt: "", top: "34%", left: "2%", rotate: 5, size: 130, hideOnMobile: true },
+    { src: "src/img/foto4.jpeg", alt: "", top: "40%", right: "2%", rotate: -6, size: 140, hideOnMobile: true },
+    { src: "src/img/foto5.jpeg", alt: "", bottom: "20%", left: "4%", rotate: 9, size: 130, hideOnMobile: true },
+    { src: "src/img/foto6.jpeg", alt: "", bottom: "4%", left: "6%", rotate: -10, size: 150 },
+    { src: "src/img/foto7.jpeg", alt: "", bottom: "2%", left: "44%", rotate: 4, size: 130, hideOnMobile: true },
+    { src: "src/img/foto8.jpeg", alt: "", bottom: "5%", right: "5%", rotate: 8, size: 150 },
   ];
 
   return (
