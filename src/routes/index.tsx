@@ -343,7 +343,7 @@ function Result({ score, total }: { score: number; total: number }) {
             Siguiente paso
           </div>
           <p className="mt-1 text-[15px] text-foreground">
-            Ve a la caja que te he preparado. Dentro está todo lo que es tuyo. 🎁
+            Te has ganado tu premio. 🎁
           </p>
         </div>
 
