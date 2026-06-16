@@ -39,7 +39,7 @@ const QUESTIONS: Question[] = [
   {
     q: "¿Cuál es mi comida favorita?",
     options: ["Mi novia", "Macarrones", "Hamburguesa", "Lo que sea que cocine mi novia"],
-    correct: [3, 2]
+    correct: [0, 3]
   },
 
   {
@@ -57,7 +57,7 @@ const QUESTIONS: Question[] = [
   {
     q: "¿Quién tiene siempre razón en la relación?",
     options: ["Elena, claramente", "Depende del día (Que quiera Elena)", "Losh dosh (Elena y Aurem)", "David, no cabe duda (Que esta no es)"],
-    correct: 2,
+    correct: [0, 1, 2],
     hint: "La B no es"
   },
 
@@ -75,14 +75,14 @@ const QUESTIONS: Question[] = [
 
   {
     q: "¿Qué personaje te gusta más?",
-    options: ["Ninguno, solo tengo ojos para mi novio", "Dan Heng", "Jing Yuan", "Sunday"],
-    correct: 0
+    options: ["Dan Heng", "Jing Yuan", "Sunday", "Ninguno, solo tengo ojos para mi novio"],
+    correct: 3
   },
 
   {
     q: "¿Quién es a quien más quiero?",
-    options: ["Todas son correctas", "Tú", "Mi novia", "Quien está leyendo esto ahora mismo"],
-    correct: [0]
+    options: ["Mi plantita", "Tú", "Mi novia", "Quien está leyendo esto ahora mismo"],
+    correct: [0, 1, 2, 3]
   }
 ];
 
