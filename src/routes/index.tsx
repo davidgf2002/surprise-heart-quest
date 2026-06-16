@@ -121,6 +121,7 @@ function Index() {
   return (
     <main className="relative min-h-screen overflow-hidden">
       <Backdrop />
+      <PolaroidScatter />
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-lg flex-col px-5 py-6">
         <Header stage={stage} current={current} total={total} />
         <div className="flex flex-1 items-center justify-center py-6">
