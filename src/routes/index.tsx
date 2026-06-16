@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import foto1 from "@/assets/foto1.jpeg.asset.json";
+import foto2 from "@/assets/foto2.jpeg.asset.json";
+import foto3 from "@/assets/foto3.jpeg.asset.json";
+import foto4 from "@/assets/foto4.jpeg.asset.json";
+import foto5 from "@/assets/foto5.jpeg.asset.json";
+import foto6 from "@/assets/foto6.jpeg.asset.json";
+import foto7 from "@/assets/foto7.jpeg.asset.json";
+import foto8 from "@/assets/foto8.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -173,14 +181,14 @@ function PolaroidScatter() {
     size: number;
     hideOnMobile?: boolean;
   }> = [
-    { src: "src/img/foto1.jpeg", alt: "", top: "4%", left: "3%", rotate: -8, size: 140 },
-    { src: "src/img/foto2.jpeg", alt: "", top: "6%", right: "4%", rotate: 7, size: 150 },
-    { src: "src/img/foto3.jpeg", alt: "", top: "34%", left: "2%", rotate: 5, size: 130, hideOnMobile: true },
-    { src: "src/img/foto4.jpeg", alt: "", top: "40%", right: "2%", rotate: -6, size: 140, hideOnMobile: true },
-    { src: "src/img/foto5.jpeg", alt: "", bottom: "20%", left: "4%", rotate: 9, size: 130, hideOnMobile: true },
-    { src: "src/img/foto6.jpeg", alt: "", bottom: "4%", left: "6%", rotate: -10, size: 150 },
-    { src: "src/img/foto7.jpeg", alt: "", bottom: "2%", left: "44%", rotate: 4, size: 130, hideOnMobile: true },
-    { src: "src/img/foto8.jpeg", alt: "", bottom: "5%", right: "5%", rotate: 8, size: 150 },
+    { src: foto1.url, alt: "Recuerdo 1", top: "4%", left: "3%", rotate: -8, size: 140 },
+    { src: foto2.url, alt: "Recuerdo 2", top: "6%", right: "4%", rotate: 7, size: 150 },
+    { src: foto3.url, alt: "Recuerdo 3", top: "34%", left: "2%", rotate: 5, size: 130, hideOnMobile: true },
+    { src: foto4.url, alt: "Recuerdo 4", top: "40%", right: "2%", rotate: -6, size: 140, hideOnMobile: true },
+    { src: foto5.url, alt: "Recuerdo 5", bottom: "20%", left: "4%", rotate: 9, size: 130, hideOnMobile: true },
+    { src: foto6.url, alt: "Recuerdo 6", bottom: "4%", left: "6%", rotate: -10, size: 150 },
+    { src: foto7.url, alt: "Recuerdo 7", bottom: "2%", left: "44%", rotate: 4, size: 130, hideOnMobile: true },
+    { src: foto8.url, alt: "Recuerdo 8", bottom: "5%", right: "5%", rotate: 8, size: 150 },
   ];
 
   return (
