@@ -160,6 +160,63 @@ function Backdrop() {
   );
 }
 
+function PolaroidScatter() {
+  // Sustituye cada `src` por una URL o un import de src/assets cuando tengas las fotos reales.
+  const PHOTOS: Array<{
+    src: string;
+    alt: string;
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
+    rotate: number;
+    size: number;
+    hideOnMobile?: boolean;
+  }> = [
+    { src: "https://placehold.co/300x300?text=Foto+1", alt: "", top: "4%", left: "3%", rotate: -8, size: 140 },
+    { src: "https://placehold.co/300x300?text=Foto+2", alt: "", top: "6%", right: "4%", rotate: 7, size: 150 },
+    { src: "https://placehold.co/300x300?text=Foto+3", alt: "", top: "34%", left: "2%", rotate: 5, size: 130, hideOnMobile: true },
+    { src: "https://placehold.co/300x300?text=Foto+4", alt: "", top: "40%", right: "2%", rotate: -6, size: 140, hideOnMobile: true },
+    { src: "https://placehold.co/300x300?text=Foto+5", alt: "", bottom: "20%", left: "4%", rotate: 9, size: 130, hideOnMobile: true },
+    { src: "https://placehold.co/300x300?text=Foto+6", alt: "", bottom: "4%", left: "6%", rotate: -10, size: 150 },
+    { src: "https://placehold.co/300x300?text=Foto+7", alt: "", bottom: "2%", left: "44%", rotate: 4, size: 130, hideOnMobile: true },
+    { src: "https://placehold.co/300x300?text=Foto+8", alt: "", bottom: "5%", right: "5%", rotate: 8, size: 150 },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      {PHOTOS.map((p, i) => (
+        <div
+          key={i}
+          className={p.hideOnMobile ? "hidden sm:block" : ""}
+          style={{
+            position: "absolute",
+            top: p.top,
+            bottom: p.bottom,
+            left: p.left,
+            right: p.right,
+            transform: `rotate(${p.rotate}deg)`,
+            opacity: 0.22,
+            filter: "blur(0.5px)",
+            background: "white",
+            padding: "8px 8px 28px 8px",
+            borderRadius: "4px",
+            boxShadow: "0 8px 24px -10px rgba(0,0,0,0.35)",
+          }}
+        >
+          <img
+            src={p.src}
+            alt={p.alt}
+            width={p.size}
+            height={p.size}
+            style={{ display: "block", width: p.size, height: p.size, objectFit: "cover" }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Header({ stage, current, total }: { stage: Stage; current: number; total: number }) {
   const showProgress = stage === "quiz" || stage === "result";
   const progress = stage === "result" ? 100 : (current / total) * 100;
