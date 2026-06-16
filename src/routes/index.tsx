@@ -24,20 +24,66 @@ export const Route = createFileRoute("/")({
 type Question = {
   q: string;
   options: string[];
-  correct: number;
+  correct: number | number[]; // Permite un solo índice o un array de índices válidos
   hint?: string;
 };
 
 const QUESTIONS: Question[] = [
-  { q: "¿Dónde fue nuestra primera cita?", options: ["En un café", "En el cine", "Dando una vuelta", "No me acuerdo, dímelo tú"], correct: 0 },
-  { q: "¿Qué comida me gusta más?", options: ["Pasta", "Pizza", "Sushi", "Lo que cocines tú"], correct: 3 },
-  { q: "¿Qué día empezamos a hablar?", options: ["Un lunes cualquiera", "El mejor día del año", "Ni idea", "El día que dejé de aburrirme"], correct: 1 },
-  { q: "¿Cuál es mi serie/peli favorita?", options: ["La que vemos juntos", "Una random de Netflix", "Friends", "Esa que siempre repito"], correct: 0 },
-  { q: "¿Qué hago cuando tengo hambre?", options: ["Me enfado", "Me callo", "Lo digo", "Todas las anteriores"], correct: 3 },
-  { q: "¿Cuál es mi estado más habitual?", options: ["Productivo", "Dormido", "Pensando en ti", "Procrastinando"], correct: 2 },
-  { q: "¿Qué estoy pensando ahora?", options: ["En ti", "En comida", "En dormir", "Todas son correctas"], correct: 3 },
-  { q: "¿Cuántas veces he dicho 'no tengo hambre' mintiendo?", options: ["Pocas", "Algunas", "Muchísimas", "He perdido la cuenta"], correct: 3 },
-  { q: "¿Cuál es mi debilidad?", options: ["El chocolate", "Dormir tarde", "Tú", "Las series malas"], correct: 2, hint: "Empieza por T, termina por Ú." },
+
+  {
+    q: "¿Cuándo empezamos a salir? (Para ir calentando)",
+    options: ["17 de Marzo", "26 de Febrero", "16 de Febrero", "26 de Marzo"],
+    correct: 1
+  },
+
+  {
+    q: "¿Cuál es mi comida favorita?",
+    options: ["Mi novia", "Macarrones", "Hamburguesa", "Lo que sea que cocine mi novia"],
+    correct: [3, 2]
+  },
+
+  {
+    q: "¿Cómo me conquintaste?",
+    options: ["Te gusta Mari", "Todas son correctas", "Cogiéndome de la manita", "Siendo autista"],
+    correct: 1
+  },
+
+  {
+    q: "¿Cuál es mi canción favorita de María Becerra?",
+    options: ["Automáico", "Infinitos como el mar", "Te Necesito", "Felices x Siempre"],
+    correct: 2
+  },
+
+  {
+    q: "¿Quién tiene siempre razón en la relación?",
+    options: ["Elena, claramente", "Depende del día (Que quiera Elena)", "Losh dosh (Elena y Aurem)", "David, no cabe duda (Que esta no es)"],
+    correct: 2,
+    hint: "La B no es"
+  },
+
+  {
+    q: "¿Dónde quiero vivir en un futuro?",
+    options: ["Me da igual (Pero contigo)", "Granada (Contigo)", "Valencia (Contigo)", "Madrid (Contigo)"],
+    correct: [2, 0]
+  },
+
+  {
+    q: "¿Primera serie que vimos juntos?",
+    options: ["Avatar", "The Mighty Nein", "Vox Machina", "Samurái de los ojos azules"],
+    correct: 2
+  },
+
+  {
+    q: "¿Qué personaje te gusta más?",
+    options: ["Ninguno, solo tengo ojos para mi novio", "Dan Heng", "Jing Yuan", "Sunday"],
+    correct: 0
+  },
+
+  {
+    q: "¿Quién es a quien más quiero?",
+    options: ["Todas son correctas", "Tú", "Mi novia", "Quien está leyendo esto ahora mismo"],
+    correct: [0]
+  }
 ];
 
 type Stage = "intro" | "explain" | "quiz" | "result";
@@ -54,9 +100,16 @@ function Index() {
   const handlePick = (idx: number) => {
     if (picked !== null) return;
     setPicked(idx);
-    const isCorrect = idx === QUESTIONS[current].correct;
+
+    const targetCorrect = QUESTIONS[current].correct;
+    // Verifica si la respuesta es correcta buscando en el array o comparando el número directo
+    const isCorrect = Array.isArray(targetCorrect) 
+      ? targetCorrect.includes(idx) 
+      : idx === targetCorrect;
+
     setFeedback(isCorrect ? "correct" : "wrong");
     if (isCorrect) setScore((s) => s + 1);
+
     setTimeout(() => {
       setPicked(null);
       setFeedback(null);
@@ -111,8 +164,7 @@ function Header({ stage, current, total }: { stage: Stage; current: number; tota
   const progress = stage === "result" ? 100 : (current / total) * 100;
   return (
     <header className="flex items-center justify-between gap-4">
-      <div className="flex items-center gap-2">
-      </div>
+      <div className="flex items-center gap-2"></div>
       {showProgress && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <div className="h-1.5 w-24 overflow-hidden rounded-full bg-secondary">
@@ -134,7 +186,7 @@ function Intro({ onStart }: { onStart: () => void }) {
   return (
     <div className="animate-fade-in w-full text-center">
       <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> un mini examen para ti
+        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Un mini examen para ti
       </div>
       <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
         ¿Cuánto me<br />conoces de verdad?
@@ -216,14 +268,21 @@ function QuizCard({
         <div className="mt-5 space-y-2">
           {question.options.map((opt, i) => {
             const isPicked = picked === i;
-            const isCorrect = i === question.correct;
+            
+            // Evalúa si este índice específico es una respuesta correcta válida
+            const isCorrect = Array.isArray(question.correct)
+              ? question.correct.includes(i)
+              : i === question.correct;
+
             let state = "border-border bg-card hover:border-foreground/30 hover:bg-secondary/60";
+            
             if (picked !== null) {
               if (isPicked && isCorrect) state = "border-success/60 bg-success/10";
               else if (isPicked && !isCorrect) state = "border-danger/60 bg-danger/10";
-              else if (isCorrect) state = "border-success/40 bg-success/5";
+              else if (isCorrect) state = "border-success/40 bg-success/5"; // Ilumina las otras respuestas correctas válidas
               else state = "border-border bg-card opacity-50";
             }
+            
             return (
               <button
                 key={i}
@@ -245,9 +304,9 @@ function QuizCard({
         {feedback && (
           <div className="animate-pop-in mt-4 text-center text-sm font-medium">
             {feedback === "correct" ? (
-              <span className="text-success">Bien ahí ✨</span>
+              <span className="text-success">Let's goo ✨</span>
             ) : (
-              <span className="text-danger">Casi… pero no 😅</span>
+              <span className="text-danger">Muy mal...</span>
             )}
           </div>
         )}
@@ -259,9 +318,9 @@ function QuizCard({
 function Result({ score, total }: { score: number; total: number }) {
   const pct = Math.round((score / total) * 100);
   const { emoji, title, message } = useMemo(() => {
-    if (pct < 50) return { emoji: "🫣", title: "Bueno… hay margen de mejora", message: "Tranquila, te pongo al día yo." };
-    if (pct < 80) return { emoji: "👏", title: "Vas bastante bien", message: "Casi me conoces de memoria." };
-    return { emoji: "🏆", title: "Nivel experto", message: "Sabes más de mí que yo mismo." };
+    if (pct < 50) return { emoji: "🫣", title: "Bueno… se puede mejorar", message: "Castigada a estudiar." };
+    if (pct < 80) return { emoji: "👏", title: "Vas bastante bien", message: "Se nota que me escuchas." };
+    return { emoji: "🏆", title: "Nivel stalker", message: "Me tienes calao" };
   }, [pct]);
 
   return (
